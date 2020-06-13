@@ -110,12 +110,12 @@ void MainMenuState::updateButtons() {
         it.second->update(mousePosWindow);
     }
 
-//    //New game
-//    if (buttons["GAME_STATE"]->isPressed())
-//    {
-//        states->push(new GameState(tateData));
-//    }
-//
+    //New game
+    if (buttons["GAME_STATE"]->isPressed())
+    {
+        states->push(new GameState(stateData));
+    }
+
     //Settings
     if (buttons["SETTINGS_STATE"]->isPressed())
     {
