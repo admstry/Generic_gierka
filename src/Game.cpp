@@ -12,9 +12,20 @@ void Game::initVariables() {
     gridSize = 64.f;
 }
 
+void Game::initGraphicsSettings()
+{
+    this->gfxSettings.loadFromFile("../Config/graphics.ini");
+}
+
 void Game::initWindow() {
-    window = new sf::RenderWindow(sf::VideoMode(1920,1080),"Generic_gierka");
-    window->setFramerateLimit(120);
+    this->window = new sf::RenderWindow(
+            this->gfxSettings.resolution,
+            this->gfxSettings.title,
+            sf::Style::Titlebar | sf::Style::Close,
+            this->gfxSettings.contextSettings);
+
+    this->window->setFramerateLimit(this->gfxSettings.frameRateLimit);
+    this->window->setVerticalSyncEnabled(this->gfxSettings.verticalSync);
 }
 
 void Game::initKeys() {
@@ -33,7 +44,7 @@ void Game::initKeys() {
 
     stream.close();
     // TODO remove later debug only
-    for (auto i : supportedKeys)
+    for (const auto& i : supportedKeys)
     {
         std::cout << i.first << " " << i.second << "\n";
     }
@@ -41,6 +52,7 @@ void Game::initKeys() {
 
 void Game::initStateData() {
     stateData.window = window;
+    stateData.gfxSettings = &gfxSettings;
     stateData.supportedKeys = &supportedKeys;
     stateData.states = &states;
     stateData.gridSize = gridSize;
@@ -51,11 +63,12 @@ void Game::initStates() {
 }
 // constructor/destructor
 Game::Game() {
-    this->initVariables();
-    this->initWindow();
-    this->initKeys();
-    this->initStateData();
-    this->initStates();
+    initVariables();
+    initGraphicsSettings();
+    initWindow();
+    initKeys();
+    initStateData();
+    initStates();
 }
 
 Game::~Game() {
@@ -84,7 +97,7 @@ void Game::updateSFMLEvents() {
 }
 
 void Game::update() {
-    this->updateSFMLEvents();
+    updateSFMLEvents();
 
     if (!states.empty())
     {

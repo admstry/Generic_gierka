@@ -6,6 +6,7 @@
 #define GENERIC_GIERKA_STATE_H
 
 //#include "Player.h"
+#include "GraphicsSettings.h"
 
 class State;
 
@@ -14,9 +15,9 @@ public:
     // variables
     float gridSize;
     sf::RenderWindow* window;
+    GraphicsSettings* gfxSettings;
     std::map<std::string, int>* supportedKeys;
     std::stack<State*>* states;
-    StateData() {};
 };
 class State {
 private:
@@ -46,7 +47,7 @@ protected:
     virtual void initKeybinds() = 0;
 
 public:
-    State(StateData* state_data);
+    explicit State(StateData* state_data);
     virtual ~State();
 
     //Accessors

@@ -5,7 +5,9 @@
 #ifndef GENERIC_GIERKA_MAINMENUSTATE_H
 #define GENERIC_GIERKA_MAINMENUSTATE_H
 
-
+#include "State.h"
+#include "SettingsState.h"
+#include "Gui.h"
 
 class MainMenuState :
         public State {
@@ -34,7 +36,7 @@ public:
     void updateButtons();
     void update(const float& tm) override;
     void renderButtons(sf::RenderTarget& target);
-    void render(sf::RenderTarget* target = nullptr) override;
+    void render(sf::RenderTarget* target) override;
 };
 
 

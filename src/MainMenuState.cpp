@@ -10,7 +10,7 @@ void MainMenuState::initVariables() {
 }
 
 void MainMenuState::initFonts() {
-    if (!font.loadFromFile("../Fonts/Dosis-Light.ttf"))
+    if (!font.loadFromFile("../Fonts/rainyhearts.ttf"))
     {
         throw std::exception();
     }
@@ -32,8 +32,10 @@ void MainMenuState::initKeybinds() {
 }
 
 void MainMenuState::initGui() {
+    const sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
     background.setSize(sf::Vector2f(1920,1080));
-    if (!backgroundTexture.loadFromFile("../Resources/Images/Backgrounds/bg2.png"))
+    if (!backgroundTexture.loadFromFile("../Resources/Backgrounds/bg.png"))
     {
         throw std::exception();
     }
@@ -58,14 +60,14 @@ void MainMenuState::initGui() {
     this->buttons["EDITOR_STATE"] = new gui::Button(
             gui::p2pX(15.6f, vm), gui::p2pY(50.f, vm),
             gui::p2pX(13.f, vm), gui::p2pY(6.f, vm),
-            &this->font, "Editor", gui::calcCharSize(vm),
+            &font, "Editor", gui::calcCharSize(vm),
             sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
             sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 
     this->buttons["EXIT_STATE"] = new gui::Button(
             gui::p2pX(15.6f, vm), gui::p2pY(65.f, vm),
             gui::p2pX(13.f, vm), gui::p2pY(6.f, vm),
-            &this->font, "Quit", gui::calcCharSize(vm),
+            &font, "Quit", gui::calcCharSize(vm),
             sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
             sf::Color(100, 100, 100, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 }
@@ -108,24 +110,24 @@ void MainMenuState::updateButtons() {
         it.second->update(mousePosWindow);
     }
 
-    //New game
-    if (buttons["GAME_STATE"]->isPressed())
-    {
-        states->push(new GameState(tateData));
-    }
-
+//    //New game
+//    if (buttons["GAME_STATE"]->isPressed())
+//    {
+//        states->push(new GameState(tateData));
+//    }
+//
     //Settings
     if (buttons["SETTINGS_STATE"]->isPressed())
     {
         states->push(new SettingsState(stateData));
     }
 
-    //Editor
-    if (buttons["EDITOR_STATE"]->isPressed())
-    {
-        states->push(new EditorState(stateData));
-    }
-
+//    //Editor
+//    if (buttons["EDITOR_STATE"]->isPressed())
+//    {
+//        states->push(new EditorState(stateData));
+//    }
+//
     //Quit the game
     if (buttons["EXIT_STATE"]->isPressed())
     {
@@ -134,7 +136,7 @@ void MainMenuState::updateButtons() {
 }
 
 void MainMenuState::update(const float &tm) {
-    updateMousePositions();
+    updateMousePositions(nullptr);
     updateInput(tm);
 
     updateButtons();
@@ -149,13 +151,13 @@ void MainMenuState::renderButtons(sf::RenderTarget &target) {
 
 void MainMenuState::render(sf::RenderTarget *target) {
     if (!target)
-        target = this->window;
+        target = window;
 
-    target->draw(this->background);
+    target->draw(background);
 
-    target->draw(this->btnBackground);
+    target->draw(btnBackground);
 
-    this->renderButtons(*target);
+    renderButtons(*target);
 
 //    TODO DEBUG ONLY REMOVE LATER
 //    sf::Text mouseText;

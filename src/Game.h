@@ -5,11 +5,12 @@
 #ifndef GENERIC_GIERKA_GAME_H
 #define GENERIC_GIERKA_GAME_H
 
-#include "State.h"
+#include "MainMenuState.h"
 
 class Game {
 private:
     // variables
+    GraphicsSettings gfxSettings;
     StateData stateData;
     sf::RenderWindow *window;
     sf::Event sfEvent;
@@ -20,8 +21,9 @@ private:
     float gridSize;
 
 public:
-    // initalization
+    // initialization
     void initVariables();
+    void initGraphicsSettings();
     void initWindow();
     void initKeys();
     void initStateData();
@@ -29,7 +31,7 @@ public:
     Game();
     virtual ~Game();
     // functions
-    void endApplication();
+    static void endApplication();
     // update
     void updateTm();
     void updateSFMLEvents();
