@@ -1,5 +1,5 @@
 //
-// Created by Adam on 13.06.2020.
+// Created by Adam on 14.06.2020.
 //
 
 #ifndef GENERIC_GIERKA_GRAPHICSSETTINGS_H

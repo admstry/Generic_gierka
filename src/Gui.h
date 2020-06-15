@@ -1,18 +1,16 @@
 //
-// Created by Adam on 13.06.2020.
+// Created by Adam on 14.06.2020.
 //
 
 #ifndef GENERIC_GIERKA_GUI_H
 #define GENERIC_GIERKA_GUI_H
 
-
 enum button_states{BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE};
 
-namespace gui
-{
-    float p2pX(float perc, const sf::VideoMode& vm);
-    float p2pY(float perc, const sf::VideoMode& vm);
-    unsigned calcCharSize(const sf::VideoMode& vm, unsigned modifier = 60);
+namespace gui {
+    float p2pX(const float perc, const sf::VideoMode& vm);
+    float p2pY(const float perc, const sf::VideoMode& vm);
+    unsigned calcCharSize(const sf::VideoMode& vm, const unsigned modifier = 60);
 
     class Button
     {
@@ -52,7 +50,7 @@ namespace gui
 
         //Modifiers
         void setText(const std::string& text);
-        void setId(short unsigned id);
+        void setId(const short unsigned id_);
 
         //Functions
         void update(const sf::Vector2i& mousePosWindow);
@@ -81,66 +79,9 @@ namespace gui
 
         //Functions
         bool getKeytime();
-        void updateKeytime(const float& dt);
-        void update(const sf::Vector2i& mousePosWindow, const float& dt);
+        void updateKeytime(const float& tm);
+        void update(const sf::Vector2i& mousePosWindow, const float& tm);
         void render(sf::RenderTarget& target);
-    };
-
-    class TextureSelector
-    {
-    private:
-        float keytime;
-        const float keytimeMax;
-        float gridSize;
-        bool active;
-        bool hidden;
-        gui::Button* hide_btn;
-        sf::RectangleShape bounds;
-        sf::Sprite sheet;
-        sf::RectangleShape selector;
-        sf::Vector2u mousePosGrid;
-        sf::IntRect textureRect;
-
-    public:
-        TextureSelector(float x, float y, float width, float height,
-                        float gridSize, const sf::Texture* texture_sheet,
-                        sf::Font& font, const std::string& text);
-        ~TextureSelector();
-
-        //Accessors
-        const bool& getActive() const;
-        const sf::IntRect& getTextureRect() const;
-
-        //Functions
-        bool getKeytime();
-        void updateKeytime(const float& dt);
-        void update(const sf::Vector2i& mousePosWindow, const float& dt);
-        void render(sf::RenderTarget& target);
-    };
-
-    class ProgressBar
-    {
-    private:
-        std::string barString;
-        sf::Text text;
-        float maxWidth;
-        int maxValue;
-        sf::RectangleShape back;
-        sf::RectangleShape inner;
-
-    public:
-        ProgressBar(float x, float y, float width, float height, int max_value,
-                    sf::Color inner_color, unsigned character_size,
-                    sf::VideoMode& vm, sf::Font* font = nullptr);
-        ~ProgressBar();
-
-        //Accessors
-
-        //Modifiers
-
-        //Functions
-        void update(int current_value);
-        void render(sf::RenderTarget & target);
     };
 }
 

@@ -6,6 +6,10 @@
 #define GENERIC_GIERKA_GAME_H
 
 #include "MainMenuState.h"
+#include "GraphicsSettings.h"
+
+class MainMenuState;
+class GraphicsSettings;
 
 class Game {
 private:

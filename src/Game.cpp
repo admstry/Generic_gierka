@@ -18,11 +18,18 @@ void Game::initGraphicsSettings()
 }
 
 void Game::initWindow() {
-    this->window = new sf::RenderWindow(
-            this->gfxSettings.resolution,
-            this->gfxSettings.title,
-            sf::Style::Titlebar | sf::Style::Close,
-            this->gfxSettings.contextSettings);
+    if(this->gfxSettings.fullscreen)
+        this->window = new sf::RenderWindow(
+                this->gfxSettings.resolution,
+                this->gfxSettings.title,
+                sf::Style::Fullscreen,
+                this->gfxSettings.contextSettings);
+    else
+        this->window = new sf::RenderWindow(
+                this->gfxSettings.resolution,
+                this->gfxSettings.title,
+                sf::Style::Titlebar | sf::Style::Close,
+                this->gfxSettings.contextSettings);
 
     this->window->setFramerateLimit(this->gfxSettings.frameRateLimit);
     this->window->setVerticalSyncEnabled(this->gfxSettings.verticalSync);
@@ -52,8 +59,8 @@ void Game::initKeys() {
 
 void Game::initStateData() {
     stateData.window = window;
-    stateData.gfxSettings = &gfxSettings;
-    stateData.supportedKeys = &supportedKeys;
+    stateData.gfxSettings = gfxSettings;
+    stateData.supportedKeys = supportedKeys;
     stateData.states = &states;
     stateData.gridSize = gridSize;
 }
