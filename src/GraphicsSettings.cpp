@@ -37,6 +37,7 @@ void GraphicsSettings::loadFromFile(const std::string& path)
 {
     std::ifstream stream(path);
 
+
     if (stream.is_open())
     {
         std::getline(stream, title);

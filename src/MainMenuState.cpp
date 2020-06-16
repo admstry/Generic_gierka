@@ -41,6 +41,15 @@ void MainMenuState::initGui() {
 
     background.setTexture(&backgroundTexture);
 
+    buttons["GAME_STATE"] = new gui::Button(
+            gui::p2pX(15.6f, vm), gui::p2pY(45.f, vm),
+            gui::p2pX(13.f, vm), gui::p2pY(6.f, vm),
+            &this->font, "New Game", gui::calcCharSize(vm),
+            sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
+            sf::Color(100, 100, 100, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+
+
+
     buttons["SETTINGS_STATE"] = new gui::Button(
             gui::p2pX(15.6f, vm), gui::p2pY(55.f, vm),
             gui::p2pX(13.f, vm), gui::p2pY(6.f, vm),
@@ -90,12 +99,12 @@ void MainMenuState::updateButtons() {
         it.second->update(mousePosWindow);
     }
 
-//    //New game
-//    if (buttons["GAME_STATE"]->isPressed())
-//    {
-//        states.push(new GameState(stateData));
-//    }
-//
+    //New game
+    if (buttons["GAME_STATE"]->isPressed())
+    {
+        states->push(new GameState(stateData));
+    }
+
     //Settings
     if (buttons["SETTINGS_STATE"]->isPressed())
     {

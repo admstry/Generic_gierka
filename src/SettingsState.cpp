@@ -62,12 +62,12 @@ void SettingsState::initGui() {
     std::vector<std::string> modes_str;
     for (auto &mode : modes)
     {
-        modes_str.push_back(std::to_string(mode.width) + 'x' + std::to_string(mode.height));
+        modes_str.push_back(std::to_string(mode.width) + "x" + std::to_string(mode.height));
     }
 
     dropDownLists["RESOLUTION"] = new gui::DropDownList(
             gui::p2pX(42.f, vm), gui::p2pY(42.f, vm),
-            gui::p2pX(10.4f, vm), gui::p2pY(4.5f, vm),
+            gui::p2pX(11.f, vm), gui::p2pY(4.5f, vm),
             font, modes_str.data(), modes_str.size()
     );
     optionsText.setFont(font);

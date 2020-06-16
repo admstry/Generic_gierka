@@ -7,6 +7,7 @@
 
 #include "State.h"
 #include "SettingsState.h"
+#include "GameState.h"
 #include "Gui.h"
 
 class State;
