@@ -26,10 +26,10 @@ private:
 
         Animation(sf::Sprite& sprite_, sf::Texture& texture_sheet,
                   float animation_timer,
-                  int start_frame_x, int start_frame_y, int frames_x, int frames_y, int width, int height)
+                  int start_frame_x, int start_frame_y, int frames_x, int frames_y, int width_, int height_)
                 : sprite(sprite_), textureSheet(texture_sheet),
                   animationTimer(animation_timer), timer(0.f), done(false),
-                  width(width), height(height)
+                  width(width_), height(height_)
         {
             startRect = sf::IntRect(start_frame_x * width, start_frame_y * height, width, height);
             currentRect = startRect;

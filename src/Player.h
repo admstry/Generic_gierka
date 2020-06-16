@@ -7,7 +7,7 @@
 
 #include "Entity.h"
 
-class Player : Entity {
+class Player : public Entity {
 private:
     bool attacking;
     void initVariables();
@@ -17,7 +17,7 @@ public:
     Player(float x, float y, sf::Texture& texture_sheet);
     ~Player();
 
-    void updateAnimation(float& tm);
+    void updateAnimation(const float& tm);
     void update(const float& tm) override;
     void render(sf::RenderTarget& target) override;
 };

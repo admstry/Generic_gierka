@@ -14,7 +14,10 @@ private:
     void initVariables();
     void initFonts();
     void initKeyBinds() override;
+    void initTextures();
+    sf::Texture texture_sheet;
     TileMap map;
+    Player *player;
 
 
 public:

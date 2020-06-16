@@ -6,6 +6,7 @@
 #define GENERIC_GIERKA_ENTITY_H
 
 #include "AnimationComponents.h"
+#include "MovementComponent.h"
 
 class Entity {
 private:
@@ -14,7 +15,7 @@ protected:
 
     sf::Sprite sprite;
 //    HitboxComponent* hitboxComponent;
-//    MovementComponent* movementComponent;
+    MovementComponent* movementComponent;
     AnimationComponent* animationComponent;
 public:
     Entity();
@@ -24,6 +25,7 @@ public:
     void createMovementComponent(float maxVelocity, float acceleration, float deceleration);
     void createAnimationComponent(sf::Texture& texture_sheet);
 
+    virtual void move(float dir_x, float dir_y, const float& tm);
     virtual void stopVelocityX();
     virtual void stopVelocityY();
 

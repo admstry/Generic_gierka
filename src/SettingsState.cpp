@@ -24,7 +24,7 @@ void SettingsState::initKeyBinds() {
         std::string key2;
 
         while (stream >> key >> key2) {
-            keybinds[key] = supportedKeys.at(key2);
+            keyBinds[key] = supportedKeys->at(key2);
         }
     }
 

@@ -23,7 +23,7 @@ void MainMenuState::initKeyBinds() {
         std::string key2;
 
         while (stream >> key >> key2) {
-            keybinds[key] = supportedKeys.at(key2);
+            keyBinds[key] = supportedKeys->at(key2);
         }
     }
 
@@ -90,7 +90,10 @@ MainMenuState::~MainMenuState() {
 }
 
 void MainMenuState::updateInput(const float &tm) {
-
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("CLOSE"))))
+    {
+        endState();
+    }
 }
 
 void MainMenuState::updateButtons() {
