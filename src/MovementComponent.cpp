@@ -71,8 +71,8 @@ void MovementComponent::stopVelocityY() {
 }
 
 void MovementComponent::move(const float dir_x, const float dir_y, const float &tm) {
-    velocity.x = acceleration * dir_x * tm;
-    velocity.y = acceleration * dir_y * tm;
+    velocity.x += acceleration * dir_x * tm;
+    velocity.y += acceleration * dir_y * tm;
 }
 
 void MovementComponent::update(const float &tm) {

@@ -15,6 +15,8 @@ private:
     void initFonts();
     void initKeyBinds() override;
     void initTextures();
+    void initPlayer();
+    void initMap();
     sf::Texture texture_sheet;
     TileMap map;
     Player *player;
@@ -24,8 +26,11 @@ public:
     explicit GameState(StateData* state_data);
     ~GameState() override;
     void updateInput(const float & tm) override;
+    void updatePlayerInput(const float &tm);
     void update(const float & tm) override;
     void render(sf::RenderTarget *target) override ;
+
+
 };
 
 

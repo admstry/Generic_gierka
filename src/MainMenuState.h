@@ -24,7 +24,7 @@ private:
     // functions
     void initVariables();
     void initFonts();
-    void initKeyBinds() override ;
+    void initKeyBinds() override;
     void initGui();
     void resetGui();
 

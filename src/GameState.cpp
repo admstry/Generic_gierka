@@ -5,6 +5,7 @@
 #include "GameState.h"
 
 void GameState::initVariables() {
+
     initKeyBinds();
 }
 
@@ -13,7 +14,7 @@ void GameState::initFonts() {
 }
 
 void GameState::initKeyBinds() {
-    std::ifstream stream("../Config/gamestate-keybinds.ini");
+    std::ifstream stream("../Config/gamestate_keybinds.ini");
 
     if (stream.is_open()) {
         std::string key;
@@ -31,12 +32,7 @@ void GameState::initTextures() {
     }
 }
 
-GameState::GameState(StateData *state_data) : State(state_data) {
-    initVariables();
-    initFonts();
-    initTextures();
-
-
+void GameState::initMap() {
     const int level[] =
             {
                     0, 0, 0, 3, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -54,16 +50,35 @@ GameState::GameState(StateData *state_data) : State(state_data) {
     if (!map.load("tileset.png", sf::Vector2u(64, 64), level, 20, 8)) {
         throw std::exception();
     }
+}
+
+void GameState::initPlayer() {
     player = new Player(0,0,texture_sheet);
+}
+GameState::GameState(StateData *state_data) : State(state_data) {
+    initVariables();
+    initFonts();
+    initTextures();
+    initMap();
+    initPlayer();
 }
 
 GameState::~GameState() = default;
 
 void GameState::updateInput(const float &tm) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_LEFT"))))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("CLOSE"))) && getKeyTime())
+    {
+        endState();
+    }
+}
+
+void GameState::updatePlayerInput(const float &tm) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_LEFT")))) {
         this->player->move(-1.f, 0.f, tm);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_RIGHT"))))
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_RIGHT")))) {
         this->player->move(1.f, 0.f, tm);
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("MOVE_UP"))))
     {
         this->player->move(0.f, -1.f, tm);
@@ -77,6 +92,9 @@ void GameState::updateInput(const float &tm) {
 void GameState::update(const float &tm) {
     updateMousePosition(nullptr);
     updateInput(tm);
+    updateKeyTime(tm);
+    updatePlayerInput(tm);
+    player->update(tm);
 }
 
 void GameState::render(sf::RenderTarget *target) {
@@ -87,5 +105,9 @@ void GameState::render(sf::RenderTarget *target) {
     target->draw(map);
     player->render(*target);
 }
+
+
+
+
 
 

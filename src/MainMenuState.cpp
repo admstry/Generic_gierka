@@ -16,13 +16,15 @@ void MainMenuState::initFonts() {
 }
 
 void MainMenuState::initKeyBinds() {
-    std::ifstream stream("../Config/mainmenustate-keybinds.ini");
+    std::ifstream stream("../Config/mainmenustate_keybinds.ini");
 
-    if (stream.is_open()) {
+    if (stream.is_open())
+    {
         std::string key;
         std::string key2;
 
-        while (stream >> key >> key2) {
+        while (stream >> key >> key2)
+        {
             keyBinds[key] = supportedKeys->at(key2);
         }
     }
@@ -31,7 +33,7 @@ void MainMenuState::initKeyBinds() {
 }
 
 void MainMenuState::initGui() {
-    const sf::VideoMode &vm = stateData->gfxSettings.resolution;
+    const sf::VideoMode &vm = stateData->gfxSettings->resolution;
 
     background.setSize(sf::Vector2f(static_cast<float>(vm.width), static_cast<float>(vm.height)));
 

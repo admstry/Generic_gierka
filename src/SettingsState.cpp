@@ -32,7 +32,7 @@ void SettingsState::initKeyBinds() {
 }
 
 void SettingsState::initGui() {
-    const sf::VideoMode& vm = stateData->gfxSettings.resolution;
+    const sf::VideoMode& vm = stateData->gfxSettings->resolution;
     background.setSize(sf::Vector2f(
             static_cast<float>(vm.width),
             static_cast<float>(vm.height))
@@ -132,9 +132,9 @@ void SettingsState::updateGui(const float &tm) {
     if (buttons["APPLY"]->isPressed())
     {
         //TEST REMOVE LATER
-        stateData->gfxSettings.resolution = modes[dropDownLists["RESOLUTION"]->getActiveElementId()];
+        stateData->gfxSettings->resolution = modes[dropDownLists["RESOLUTION"]->getActiveElementId()];
 
-        window->create(stateData->gfxSettings.resolution, stateData->gfxSettings.title, sf::Style::Default);
+        window->create(stateData->gfxSettings->resolution, stateData->gfxSettings->title, sf::Style::Default);
 
         resetGui();
     }
