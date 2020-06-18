@@ -7,6 +7,7 @@
 
 #include "AnimationComponents.h"
 #include "MovementComponent.h"
+#include "HitboxComponent.h"
 
 class Entity {
 private:
@@ -14,7 +15,7 @@ private:
 protected:
 
     sf::Sprite sprite;
-//    HitboxComponent* hitboxComponent;
+    HitboxComponent* hitboxComponent;
     MovementComponent* movementComponent;
     AnimationComponent* animationComponent;
 public:
@@ -28,6 +29,9 @@ public:
     virtual void move(float dir_x, float dir_y, const float& tm);
     virtual void stopVelocityX();
     virtual void stopVelocityY();
+
+    virtual sf::FloatRect getGlobalBounds();
+    virtual const sf::Vector2f& getPosition() const;
 
     virtual void update(const float& tm) = 0;
     virtual void render(sf::RenderTarget& target) = 0;

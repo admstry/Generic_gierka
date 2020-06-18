@@ -19,7 +19,7 @@ Entity::~Entity() {
 }
 
 void Entity::createHitboxComponent(sf::Sprite &sprite, float offset_x, float offset_y, float width, float height) {
-
+    hitboxComponent = new HitboxComponent(sprite,offset_x,offset_y,width,height);
 }
 
 void Entity::createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration) {
@@ -41,6 +41,14 @@ void Entity::stopVelocityX() {
 
 void Entity::stopVelocityY() {
 
+}
+
+sf::FloatRect Entity::getGlobalBounds() {
+    return hitboxComponent->getGlobalBounds();
+}
+
+const sf::Vector2f &Entity::getPosition() const {
+    return sprite.getPosition();
 }
 
 

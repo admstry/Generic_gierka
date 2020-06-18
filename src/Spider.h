@@ -1,13 +1,13 @@
 //
-// Created by Adam on 16.06.2020.
+// Created by Adam on 18.06.2020.
 //
 
-#ifndef GENERIC_GIERKA_PLAYER_H
-#define GENERIC_GIERKA_PLAYER_H
+#ifndef GENERIC_GIERKA_SPIDER_H
+#define GENERIC_GIERKA_SPIDER_H
 
 #include "Entity.h"
 
-class Player : public Entity {
+class Spider : public Entity {
 private:
     int hp;
     bool attacking;
@@ -15,9 +15,8 @@ private:
     void initComponents();
     void initAnimations();
 public:
-    Player(float x, float y, sf::Texture& texture_sheet);
-    ~Player();
-
+    Spider(float x, float y, sf::Texture &texture_sheet);
+    ~Spider();
     int getHp() const;
     void loseHp(int hp);
     void updateAnimation(const float& tm);
@@ -26,4 +25,4 @@ public:
 };
 
 
-#endif //GENERIC_GIERKA_PLAYER_H
+#endif //GENERIC_GIERKA_SPIDER_H

@@ -8,6 +8,7 @@
 #include "State.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Spider.h"
 
 class GameState : public State {
 private:
@@ -16,17 +17,29 @@ private:
     void initKeyBinds() override;
     void initTextures();
     void initPlayer();
+    void initView();
     void initMap();
-    sf::Texture texture_sheet;
+    void initGui();
+    sf::View view;
     TileMap map;
+
     Player *player;
+    std::vector<Spider*> spiders;
+    sf::Texture player_sheet;
+    sf::Texture spider_sheet;
+
+    sf::Font font;
+    sf::Text hpText;
 
 
 public:
     explicit GameState(StateData* state_data);
     ~GameState() override;
+    void updateView();
     void updateInput(const float & tm) override;
     void updatePlayerInput(const float &tm);
+    void updateCombat();
+    void updateGui();
     void update(const float & tm) override;
     void render(sf::RenderTarget *target) override ;
 

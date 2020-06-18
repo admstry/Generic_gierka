@@ -5,12 +5,14 @@
 #include "GameState.h"
 
 void GameState::initVariables() {
-
+    srand(time(nullptr));
     initKeyBinds();
 }
 
 void GameState::initFonts() {
-
+    if(font.loadFromFile("../Fonts/rainyhearts.ttf")) {
+        std::exception();
+    }
 }
 
 void GameState::initKeyBinds() {
@@ -27,7 +29,10 @@ void GameState::initKeyBinds() {
 }
 
 void GameState::initTextures() {
-    if (!texture_sheet.loadFromFile("../Resources/Sprites/player.png")) {
+    if (!player_sheet.loadFromFile("../Resources/Sprites/player.png")) {
+        throw std::exception();
+    }
+    if (!spider_sheet.loadFromFile("../Resources/Sprites/spider.png")) {
         throw std::exception();
     }
 }
@@ -53,17 +58,43 @@ void GameState::initMap() {
 }
 
 void GameState::initPlayer() {
-    player = new Player(0,0,texture_sheet);
+    player = new Player(0, 0, player_sheet);
+    for (int i = 0; i < 5; i++) {
+        spiders.emplace_back(new Spider(rand()%1900+i,rand()%900+i*10,spider_sheet));
+    }
 }
+
+void GameState::initView() {
+    view.setSize(sf::Vector2f(stateData->gfxSettings->resolution.width, stateData->gfxSettings->resolution.height));
+    view.setCenter(sf::Vector2f(stateData->gfxSettings->resolution.width / 2.f, stateData->gfxSettings->resolution.height) / 2.f);
+}
+
+void GameState::initGui() {
+    hpText.setFont(font);
+    hpText.setPosition(10.f,10.f);
+    hpText.setString(std::to_string(player->getHp()));
+}
+
 GameState::GameState(StateData *state_data) : State(state_data) {
     initVariables();
     initFonts();
     initTextures();
     initMap();
     initPlayer();
+    initView();
+    initGui();
 }
 
-GameState::~GameState() = default;
+GameState::~GameState() {
+        delete player;
+        for (auto &spider : spiders) {
+            delete spider;
+        }
+}
+
+void GameState::updateView() {
+    view.setCenter(sf::Vector2f(player->getPosition()));
+}
 
 void GameState::updateInput(const float &tm) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keyBinds.at("CLOSE"))) && getKeyTime())
@@ -89,22 +120,54 @@ void GameState::updatePlayerInput(const float &tm) {
     }
 }
 
+void GameState::updateCombat() {
+    for (auto &spider : spiders) {
+        if (player->getGlobalBounds().intersects(spider->getGlobalBounds()) && getKeyTime()) {
+            player->loseHp(1);
+            updateGui();
+        }
+    }
+}
+
+void GameState::updateGui() {
+    hpText.setString(std::to_string(player->getHp()));
+}
+
 void GameState::update(const float &tm) {
-    updateMousePosition(nullptr);
+    updateView();
+    updateMousePosition(&view);
     updateInput(tm);
     updateKeyTime(tm);
     updatePlayerInput(tm);
     player->update(tm);
+    for (auto &spider : spiders) {
+        spider->update(tm);
+    }
+    updateCombat();
 }
 
 void GameState::render(sf::RenderTarget *target) {
     if(!target) {
         target = window;
     }
-
+    window->setView(view);
     target->draw(map);
     player->render(*target);
+    for (auto &spider : spiders) {
+        spider->render(*target);
+    }
+    target->draw(hpText);
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
