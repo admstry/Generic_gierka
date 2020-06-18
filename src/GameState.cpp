@@ -60,7 +60,7 @@ void GameState::initMap() {
 void GameState::initPlayer() {
     player = new Player(0, 0, player_sheet);
     for (int i = 0; i < 5; i++) {
-        spiders.emplace_back(new Spider(rand()%1900+i,rand()%900+i*10,spider_sheet));
+        activeEntities.emplace_back(new Spider(rand() % 1900 + i, rand() % 900 + i * 10, spider_sheet));
     }
 }
 
@@ -71,6 +71,7 @@ void GameState::initView() {
 
 void GameState::initGui() {
     hpText.setFont(font);
+    hpText.setFillColor(sf::Color::Red);
     hpText.setPosition(10.f,10.f);
     hpText.setString(std::to_string(player->getHp()));
 }
@@ -87,8 +88,8 @@ GameState::GameState(StateData *state_data) : State(state_data) {
 
 GameState::~GameState() {
         delete player;
-        for (auto &spider : spiders) {
-            delete spider;
+        for (auto &entity : activeEntities) {
+            delete entity;
         }
 }
 
@@ -120,12 +121,39 @@ void GameState::updatePlayerInput(const float &tm) {
     }
 }
 
-void GameState::updateCombat() {
-    for (auto &spider : spiders) {
-        if (player->getGlobalBounds().intersects(spider->getGlobalBounds()) && getKeyTime()) {
+
+void GameState::updateCombat(const float &tm) {
+    unsigned counter = 0;
+    for (auto &entity : activeEntities) {
+        if (player->getGlobalBounds().intersects(entity->getGlobalBounds()) && getKeyTime()) {
             player->loseHp(1);
-            updateGui();
         }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)
+            && entity->getDistance(*player) < player->getWeapon()->getRange()
+            && (player->getFaceDirection(*entity) || entity->getDistance(*player) < 5.f)
+            && player->getWeapon()->getAttackTimer()) {
+            entity->loseHp(player->getWeapon()->getDamage());
+            entity->stopVelocity();
+        }
+        if (entity->getHp() <= 0) {
+            activeEntities.erase(activeEntities.begin()+counter);
+            counter--;
+        }
+        if (player->getDistance(*entity) < 100.f) {
+            if (player->getCenter().x > entity->getCenter().x) {
+                entity->move(1.f,0.f,tm);
+            }
+            if (player->getCenter().x < entity->getCenter().x) {
+                entity->move(-1.f,0.f,tm);
+            }
+            if (player->getCenter().y < entity->getCenter().y) {
+                entity->move(0.f,-1.f,tm);
+            }
+            if (player->getCenter().y > entity->getCenter().y) {
+                entity->move(0.f,1.f,tm);
+            }
+        }
+    counter++;
     }
 }
 
@@ -140,10 +168,11 @@ void GameState::update(const float &tm) {
     updateKeyTime(tm);
     updatePlayerInput(tm);
     player->update(tm);
-    for (auto &spider : spiders) {
-        spider->update(tm);
+    for (auto &entity : activeEntities) {
+        entity->update(tm);
     }
-    updateCombat();
+    updateCombat(tm);
+    updateGui();
 }
 
 void GameState::render(sf::RenderTarget *target) {
@@ -153,11 +182,14 @@ void GameState::render(sf::RenderTarget *target) {
     window->setView(view);
     target->draw(map);
     player->render(*target);
-    for (auto &spider : spiders) {
-        spider->render(*target);
+    for (auto &entity : activeEntities) {
+        entity->render(*target);
     }
+    window->setView(window->getDefaultView());
     target->draw(hpText);
 }
+
+
 
 
 

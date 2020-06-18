@@ -7,7 +7,9 @@
 
 void Player::initVariables() {
     attacking = false;
-    hp = 100;
+    hpMax = 100;
+    hp = hpMax;
+    weapon = new Weapon(3,50,1);
 }
 
 void Player::initComponents() {
@@ -25,25 +27,35 @@ Player::Player(float x, float y, sf::Texture &texture_sheet) {
     initComponents();
     createMovementComponent(250.f, 1600.f, 500.f);
     createAnimationComponent(texture_sheet);
-    createHitboxComponent(sprite,0,0,64,64);
+    createHitboxComponent(sprite,10,0,45,60);
     sprite.setPosition(x,y);
     initAnimations();
 }
 
 Player::~Player() = default;
 
+Weapon *Player::getWeapon() {
+    return weapon;
+}
+
 void Player::updateAnimation(const float &tm) {
-    if (this->movementComponent->getState(IDLE))
+    if (movementComponent->getState(IDLE))
     {
-        this->animationComponent->play("IDLE", tm);
+        animationComponent->play("IDLE", tm);
     }
-    else if (this->movementComponent->getState(MOVING_LEFT) || this->movementComponent->getState(MOVING_UP))
+    else if (movementComponent->getState(MOVING_LEFT))
     {
-        this->animationComponent->play("WALK_LEFT", tm, this->movementComponent->getVelocity().x, this->movementComponent->getMaxVelocity());
+        animationComponent->play("WALK_LEFT", tm, movementComponent->getVelocity().x, movementComponent->getMaxVelocity());
+        last_move = MOVING_LEFT;
     }
-    else if (this->movementComponent->getState(MOVING_RIGHT) || this->movementComponent->getState(MOVING_DOWN))
+    else if (movementComponent->getState(MOVING_RIGHT) || movementComponent->getState(MOVING_DOWN))
     {
-        this->animationComponent->play("WALK_RIGHT", tm, this->movementComponent->getVelocity().x, this->movementComponent->getMaxVelocity());
+        animationComponent->play("WALK_RIGHT", tm, movementComponent->getVelocity().x, movementComponent->getMaxVelocity());
+        last_move = MOVING_RIGHT;
+    }
+    else if (movementComponent->getState(MOVING_UP))
+    {
+        animationComponent->play("WALK_LEFT", tm, movementComponent->getVelocity().x, movementComponent->getMaxVelocity());
     }
 }
 
@@ -58,12 +70,12 @@ void Player::render(sf::RenderTarget &target) {
     hitboxComponent->render(target);
 }
 
-int Player::getHp() const {
-    return hp;
+bool Player::getFaceDirection(Entity& entity) const {
+    if ((movementComponent->getState(MOVING_RIGHT) || last_move == MOVING_RIGHT) && entity.getPosition().x > sprite.getPosition().x) {
+        return true;
+    }
+    else return (movementComponent->getState(MOVING_LEFT) || last_move == MOVING_LEFT) && entity.getPosition().x < sprite.getPosition().x ;
 }
 
-void Player::loseHp(int hp) {
-    this->hp -= hp;
-}
 
 

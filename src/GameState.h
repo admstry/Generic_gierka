@@ -24,7 +24,7 @@ private:
     TileMap map;
 
     Player *player;
-    std::vector<Spider*> spiders;
+    std::vector<Entity*> activeEntities;
     sf::Texture player_sheet;
     sf::Texture spider_sheet;
 
@@ -38,7 +38,8 @@ public:
     void updateView();
     void updateInput(const float & tm) override;
     void updatePlayerInput(const float &tm);
-    void updateCombat();
+    void updateCombat(const float & tm);
+    void updateMonsterAi();
     void updateGui();
     void update(const float & tm) override;
     void render(sf::RenderTarget *target) override ;

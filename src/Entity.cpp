@@ -43,6 +43,18 @@ void Entity::stopVelocityY() {
 
 }
 
+void Entity::stopVelocity() {
+    movementComponent->stopVelocity();
+}
+
+int Entity::getHp() const {
+    return hp;
+}
+
+void Entity::loseHp(int hp_) {
+    hp -= hp_;
+}
+
 sf::FloatRect Entity::getGlobalBounds() {
     return hitboxComponent->getGlobalBounds();
 }
@@ -50,5 +62,21 @@ sf::FloatRect Entity::getGlobalBounds() {
 const sf::Vector2f &Entity::getPosition() const {
     return sprite.getPosition();
 }
+
+sf::Vector2f Entity::getCenter() const
+{
+    if (this->hitboxComponent) {
+        return hitboxComponent->getPosition() + sf::Vector2f(this->hitboxComponent->getGlobalBounds().width / 2.f,
+                                                             this->hitboxComponent->getGlobalBounds().height / 2.f);
+    }
+
+    return sprite.getPosition() + sf::Vector2f(this->sprite.getGlobalBounds().width / 2.f,this->sprite.getGlobalBounds().height / 2.f);
+}
+
+float Entity::getDistance(const Entity &entity) const {
+    return static_cast<float>(sqrt(pow(getCenter().x - entity.getCenter().x, 2) + pow(getCenter().y - entity.getCenter().y, 2)));
+}
+
+
 
 

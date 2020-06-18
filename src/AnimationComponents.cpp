@@ -13,9 +13,9 @@ AnimationComponent::AnimationComponent(sf::Sprite& sprite, sf::Texture& texture_
 
 AnimationComponent::~AnimationComponent()
 {
-    for (auto &i : animations)
+    for (auto &animation : animations)
     {
-        delete i.second;
+        delete animation.second;
     }
 }
 
@@ -110,7 +110,7 @@ const bool& AnimationComponent::play(const std::string& key, const float & tm, c
             {
                 priorityAnimation = nullptr;
             }
-        }\
+        }
     }
     else //Play animation of no other priority animation is set
     {
