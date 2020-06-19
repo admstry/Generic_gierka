@@ -16,6 +16,8 @@ Entity::Entity() {
 
 Entity::~Entity() {
     delete animationComponent;
+    delete hitboxComponent;
+    delete movementComponent;
 }
 
 void Entity::createHitboxComponent(sf::Sprite &sprite, float offset_x, float offset_y, float width, float height) {
@@ -77,6 +79,13 @@ float Entity::getDistance(const Entity &entity) const {
     return static_cast<float>(sqrt(pow(getCenter().x - entity.getCenter().x, 2) + pow(getCenter().y - entity.getCenter().y, 2)));
 }
 
+void Entity::setVeloctiy(sf::Vector2f velocity) {
+    movementComponent->setVelocity(velocity);
+}
+
+sf::Vector2f Entity::getVelocity() const {
+    return movementComponent->getVelocity();
+}
 
 
 

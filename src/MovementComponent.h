@@ -37,6 +37,7 @@ public:
     void stopVelocity();
     void stopVelocityX();
     void stopVelocityY();
+    void setVelocity(sf::Vector2f velocity);
 
     void move(float dir_x, float dir_y, const float& tm);
     void update(const float& tm);

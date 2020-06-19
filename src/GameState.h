@@ -25,6 +25,7 @@ private:
 
     Player *player;
     std::vector<Entity*> activeEntities;
+    std::stack<Entity*> entityStack;
     sf::Texture player_sheet;
     sf::Texture spider_sheet;
 

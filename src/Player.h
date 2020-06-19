@@ -6,20 +6,21 @@
 #define GENERIC_GIERKA_PLAYER_H
 
 #include "Entity.h"
+#include "Weapon.h"
 
 class Player : public Entity {
 private:
-    int hp;
-    bool attacking;
     void initVariables();
     void initComponents();
     void initAnimations();
+    short last_move;
+    Weapon *weapon;
 public:
     Player(float x, float y, sf::Texture& texture_sheet);
     ~Player();
 
-    int getHp() const;
-    void loseHp(int hp);
+    Weapon* getWeapon();
+    bool getFaceDirection(Entity& entity) const;
     void updateAnimation(const float& tm);
     void update(const float& tm) override;
     void render(sf::RenderTarget& target) override;

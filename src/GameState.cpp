@@ -10,8 +10,8 @@ void GameState::initVariables() {
 }
 
 void GameState::initFonts() {
-    if(font.loadFromFile("../Fonts/rainyhearts.ttf")) {
-        std::exception();
+    if(!font.loadFromFile("../Fonts/rainyhearts.ttf")) {
+        throw std::exception();
     }
 }
 
@@ -59,8 +59,8 @@ void GameState::initMap() {
 
 void GameState::initPlayer() {
     player = new Player(0, 0, player_sheet);
-    for (int i = 0; i < 5; i++) {
-        activeEntities.emplace_back(new Spider(rand() % 1900 + i, rand() % 900 + i * 10, spider_sheet));
+    for (int i = 0; i < 20; i++) {
+        activeEntities.emplace_back(new Spider(rand()%1000+(i/10), rand()%900+(i/20), spider_sheet));
     }
 }
 
@@ -121,23 +121,23 @@ void GameState::updatePlayerInput(const float &tm) {
     }
 }
 
-
 void GameState::updateCombat(const float &tm) {
     unsigned counter = 0;
     for (auto &entity : activeEntities) {
         if (player->getGlobalBounds().intersects(entity->getGlobalBounds()) && getKeyTime()) {
             player->loseHp(1);
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)
-            && entity->getDistance(*player) < player->getWeapon()->getRange()
-            && (player->getFaceDirection(*entity) || entity->getDistance(*player) < 5.f)
-            && player->getWeapon()->getAttackTimer()) {
-            entity->loseHp(player->getWeapon()->getDamage());
-            entity->stopVelocity();
+        if (entity->getDistance(*player) < player->getWeapon()->getRange()
+            && (player->getFaceDirection(*entity) || entity->getDistance(*player) < 5.f)) {
+            entityStack.push(entity);
+//            entity->loseHp(player->getWeapon()->getDamage());
+//            entity->stopVelocity();
         }
         if (entity->getHp() <= 0) {
             activeEntities.erase(activeEntities.begin()+counter);
-            counter--;
+//            std::cout << "Deleted Entity Id: " << counter << "\n";
+//            counter--;
+            break;
         }
         if (player->getDistance(*entity) < 100.f) {
             if (player->getCenter().x > entity->getCenter().x) {
@@ -154,6 +154,17 @@ void GameState::updateCombat(const float &tm) {
             }
         }
     counter++;
+    }
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && player->getWeapon()->getAttackTimer()) {
+        while (!entityStack.empty()) {
+            entityStack.top()->loseHp(player->getWeapon()->getDamage());
+            entityStack.top()->setVeloctiy(-entityStack.top()->getVelocity());
+            entityStack.pop();
+
+        }
+    }
+    while (!entityStack.empty()) {
+        entityStack.pop();
     }
 }
 

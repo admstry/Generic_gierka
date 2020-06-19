@@ -125,3 +125,8 @@ void MovementComponent::update(const float &tm) {
     //Final move
     sprite.move(velocity * tm); //Uses velocity
 }
+
+void MovementComponent::setVelocity(sf::Vector2f velocity_) {
+    velocity.x = velocity_.x;
+    velocity.y = velocity_.y;
+}

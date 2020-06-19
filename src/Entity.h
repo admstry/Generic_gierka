@@ -32,6 +32,7 @@ public:
     virtual void stopVelocityX();
     virtual void stopVelocityY();
     virtual void stopVelocity();
+    virtual void setVeloctiy(sf::Vector2f velocity);
 
     virtual void loseHp(int hp);
     virtual int getHp() const;
@@ -40,6 +41,7 @@ public:
     virtual const sf::Vector2f& getPosition() const;
     virtual float getDistance(const Entity& entity) const;
     virtual sf::Vector2f getCenter() const;
+    virtual sf::Vector2f getVelocity() const;
 
     virtual void update(const float& tm) = 0;
     virtual void render(sf::RenderTarget& target) = 0;
