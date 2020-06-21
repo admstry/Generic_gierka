@@ -7,6 +7,8 @@
 void GameState::initVariables() {
     srand(time(nullptr));
     initKeyBinds();
+    mapSizeX = 50;
+    mapSizeY = 50;
 }
 
 void GameState::initFonts() {
@@ -38,34 +40,47 @@ void GameState::initTextures() {
 }
 
 void GameState::initMap() {
-    const int level[] =
-            {
-                    0, 0, 0, 3, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    0, 1, 1, 3, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-                    1, 1, 0, 3, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-                    1, 1, 0, 3, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 3,
-                    1, 1, 3, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 0, 0, 3,
-                    1, 3, 3, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 0, 3,
-                    3, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-            };
+    tiles.resize(mapSizeX, std::vector<std::vector<int>>());
+    for (int x_ = 0; x_ < mapSizeX; x_++) {
+        for (int y_ = 0; y_ < mapSizeY; y_++) {
+            tiles[x_].resize(mapSizeY, std::vector<int>());
+        }
+    }
+    std::ifstream stream("../Resources/Tilemap/tiles.txt");
+    std::string line;
+    unsigned int x = 0;
+    unsigned int y;
+    int values;
+    if (stream.is_open()) {
+        while (std::getline(stream, line)) {
+            std::stringstream ss(line);
+            y = 0;
+            while (ss >> values) {
+                tiles.at(x).at(y).push_back(values);
+                if(ss.peek() == ',') {
+                    ss.ignore();
+                }
+                y++;
+            }
+            x++;
+        }
+    }
 
     // create the tilemap from the level definition
-
-    if (!map.load("tileset.png", sf::Vector2u(64, 64), level, 20, 8)) {
+    if (!map.load("../Resources/Tilemap/tiles1.png", sf::Vector2u(64, 64), &tiles, mapSizeY, mapSizeX, 0)) {
         throw std::exception();
     }
 }
 
 void GameState::initPlayer() {
     player = new Player(0, 0, player_sheet);
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 30; i++) {
         activeEntities.emplace_back(new Spider(rand()%1000+(i/10), rand()%900+(i/20), spider_sheet));
     }
 }
 
 void GameState::initView() {
-    view.setSize(sf::Vector2f(stateData->gfxSettings->resolution.width, stateData->gfxSettings->resolution.height));
+    view.setSize(sf::Vector2f(stateData->gfxSettings->resolution.width/1.5f, stateData->gfxSettings->resolution.height/1.5f));
     view.setCenter(sf::Vector2f(stateData->gfxSettings->resolution.width / 2.f, stateData->gfxSettings->resolution.height) / 2.f);
 }
 

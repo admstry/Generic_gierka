@@ -21,8 +21,10 @@ private:
     void initMap();
     void initGui();
     sf::View view;
+    int mapSizeX;
+    int mapSizeY;
+    std::vector<std::vector<std::vector<int>>> tiles;
     TileMap map;
-
     Player *player;
     std::vector<Entity*> activeEntities;
     std::stack<Entity*> entityStack;

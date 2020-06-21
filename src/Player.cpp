@@ -10,6 +10,7 @@ void Player::initVariables() {
     hpMax = 100;
     hp = hpMax;
     weapon = new Weapon(3,50,1);
+
 }
 
 void Player::initComponents() {
@@ -29,6 +30,7 @@ Player::Player(float x, float y, sf::Texture &texture_sheet) {
     createAnimationComponent(texture_sheet);
     createHitboxComponent(sprite,10,0,45,60);
     sprite.setPosition(x,y);
+    sprite.setScale(0.9f,0.9f);
     initAnimations();
 }
 
