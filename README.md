@@ -12,3 +12,7 @@
  No changes were made
  
  You should assume that everything else in the game is created either by me or is free to use without any license.
+
+ Opis:
+
+Gra w swoich założeniach ma być podobna do gier w stylu roguelike lub dungeon crawler w 2D. Postać będzie poruszać się korytarzami między pomieszczeniami i będzie napotykać na swojej drodze różne przeciwności losu jak potwory czy pułapki. Wykorzystane biblioteki to SFML-2.5.1 Sterowanie W,A,S,D służy do poruszania, prawy przycisk myszy służy do ataku.
