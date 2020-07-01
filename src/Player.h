@@ -10,16 +10,18 @@
 
 class Player : public Entity {
 private:
-    void initVariables();
-    void initComponents();
+    // functions
     void initAnimations();
+    // variables;
     short last_move;
     Weapon *weapon;
 public:
     Player(float x, float y, sf::Texture& texture_sheet);
-    ~Player();
+    ~Player() override;
 
+    // functions
     Weapon* getWeapon();
+
     bool getFaceDirection(Entity& entity) const;
     void updateAnimation(const float& tm);
     void update(const float& tm) override;

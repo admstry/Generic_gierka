@@ -5,16 +5,9 @@
 #include "pch.h"
 #include "Weapon.h"
 
-void Weapon::initVariables() {
-    range = 50;
-    damage = 3;
-
+Weapon::Weapon(unsigned int damage_, unsigned int range_, unsigned int atk_speed) {
     attackTimer.restart();
     attackTimerMax = 300;
-}
-
-Weapon::Weapon(unsigned int damage_, unsigned int range_, unsigned int atk_speed) {
-    initVariables();
     damage = damage_;
     range = range_;
 }
@@ -30,8 +23,7 @@ const unsigned &Weapon::getRange() const {
 }
 
 bool Weapon::getAttackTimer() {
-    if (attackTimer.getElapsedTime().asMilliseconds() >= attackTimerMax)
-    {
+    if (attackTimer.getElapsedTime().asMilliseconds() >= attackTimerMax) {
         attackTimer.restart();
         return true;
     }

@@ -2,17 +2,17 @@
 // Created by Adam on 16.06.2020.
 //
 
-#ifndef GENERIC_GIERKA_ANIMATIONCOMPONENTS_H
-#define GENERIC_GIERKA_ANIMATIONCOMPONENTS_H
+#ifndef GENERIC_GIERKA_ANIMATE_H
+#define GENERIC_GIERKA_ANIMATE_H
 
 
-class AnimationComponent
+class Animate
 {
 private:
     class Animation
     {
     public:
-        //Variables
+        // variables
         sf::Sprite& sprite;
         sf::Texture& textureSheet;
         float animationTimer;
@@ -29,8 +29,7 @@ private:
                   int start_frame_x, int start_frame_y, int frames_x, int frames_y, int width_, int height_)
                 : sprite(sprite_), textureSheet(texture_sheet),
                   animationTimer(animation_timer), timer(0.f), done(false),
-                  width(width_), height(height_)
-        {
+                  width(width_), height(height_) {
             startRect = sf::IntRect(start_frame_x * width, start_frame_y * height, width, height);
             currentRect = startRect;
             endRect = sf::IntRect(frames_x * width, frames_y * height, width, height);
@@ -38,31 +37,21 @@ private:
             sprite.setTexture(textureSheet, true);
             sprite.setTextureRect(startRect);
         }
-
-        //Accessor
-        const bool& isDone() const
-        {
+        // functions
+        [[nodiscard]] const bool& isDone() const {
             return done;
         }
 
-        //Functions
-        const bool& play(const float& tm)
-        {
-            //Update timer
+        const bool& play(const float& tm) {
             done = false;
             timer += 100.f * tm;
-            if (timer >= animationTimer)
-            {
-                //reset timer
+            if (timer >= animationTimer) {
                 timer = 0.f;
 
-                //Animate
-                if (currentRect != endRect)
-                {
+                if (currentRect != endRect) {
                     currentRect.left += width;
                 }
-                else //Reset
-                {
+                else {
                     currentRect.left = startRect.left;
                     done = true;
                 }
@@ -73,26 +62,19 @@ private:
             return done;
         }
 
-        const bool& play(const float& tm, float mod_percent)
-        {
-            //Update timer
+        const bool& play(const float& tm, float mod_percent) {
             if (mod_percent < 0.5f)
                 mod_percent = 0.5f;
 
             done = false;
             timer += mod_percent * 100.f * tm;
-            if (timer >= animationTimer)
-            {
-                //reset timer
+            if (timer >= animationTimer) {
                 timer = 0.f;
 
-                //Animate
-                if (currentRect != endRect)
-                {
+                if (currentRect != endRect) {
                     currentRect.left += width;
                 }
-                else //Reset
-                {
+                else {
                     currentRect.left = startRect.left;
                     done = true;
                 }
@@ -103,13 +85,13 @@ private:
             return done;
         }
 
-        void reset()
-        {
+        void reset() {
             timer = animationTimer;
             currentRect = startRect;
         }
     };
 
+    // variables
     sf::Sprite& sprite;
     sf::Texture& textureSheet;
     std::map<std::string, Animation*> animations;
@@ -117,13 +99,11 @@ private:
     Animation* priorityAnimation;
 
 public:
-    AnimationComponent(sf::Sprite& sprite, sf::Texture& texture_sheet);
-    virtual ~AnimationComponent();
-
-    //Accessor
+    Animate(sf::Sprite& sprite, sf::Texture& texture_sheet);
+    virtual ~Animate();
+    // functions
     const bool& isDone(const std::string& key);
 
-    //Functions
     void addAnimation(const std::string& key,
                       float animation_timer,
                       int start_frame_x, int start_frame_y, int frames_x, int frames_y, int width, int height);
@@ -133,4 +113,4 @@ public:
 };
 
 
-#endif //GENERIC_GIERKA_ANIMATIONCOMPONENTS_H
+#endif //GENERIC_GIERKA_ANIMATE_H

@@ -5,17 +5,17 @@
 #ifndef GENERIC_GIERKA_STATE_H
 #define GENERIC_GIERKA_STATE_H
 
-#include "GraphicsSettings.h"
+#include "Graphics.h"
 
 class State;
-class GraphicsSettings;
+class Graphics;
 
 class StateData {
 public:
     // variables
     float gridSize;
     sf::RenderWindow* window;
-    GraphicsSettings* gfxSettings;
+    Graphics* settings;
     std::map<std::string, int>* supportedKeys;
     std::stack<State*>* states;
 };
@@ -23,6 +23,7 @@ public:
 class State {
 private:
 protected:
+    // variables
     StateData *stateData;
     std::stack<State*>* states;
     sf::RenderWindow *window;
@@ -34,10 +35,10 @@ protected:
     float keyTimeMax;
     float gridSize;
 
-    sf::Vector2i mousePosScreen;
-    sf::Vector2i mousePosWindow;
-    sf::Vector2f mousePosView;
-    sf::Vector2i mousePosGrid;
+    sf::Vector2i mousePositionScreen;
+    sf::Vector2i mousePositionWindow;
+    sf::Vector2f mousePositionView;
+    sf::Vector2i mousePositionGrid;
 
     std::map<std::string, sf::Texture> textures;
 
@@ -49,12 +50,9 @@ public:
     explicit State(StateData *state_data);
     virtual ~State();
 
-    // accessors
-
-    bool getQuit() const;
-    bool getKeyTime();
-
     // functions
+    [[nodiscard]] bool getQuit() const;
+    bool getKeyTime();
 
     void endState();
     void pauseState();

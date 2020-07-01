@@ -1,49 +1,62 @@
 //
-// Created by Adam on 11.06.2020.
+// Created by Adam on 16.06.2020.
 //
 
 #ifndef GENERIC_GIERKA_GAME_H
 #define GENERIC_GIERKA_GAME_H
 
-#include "MainMenuState.h"
-#include "GraphicsSettings.h"
+#include "State.h"
+#include "TileMap.h"
+#include "Player.h"
+#include "Spider.h"
+#include "Pause.h"
 
-class MainMenuState;
-class GraphicsSettings;
-
-class Game {
+class Game : public State {
 private:
+    // functions
+    void initFonts();
+    void initKeyBinds() override;
+    void initTextures();
+    void initPlayer();
+    void initEnemies();
+    void initView();
+    void initMap();
+    void initGui();
     // variables
-    GraphicsSettings gfxSettings;
-    StateData stateData;
-    sf::RenderWindow *window;
-    sf::Event sfEvent;
-    sf::Clock tmClock;
-    float tm;
-    std::stack<State*> states;
-    std::map<std::string, int> supportedKeys;
-    float gridSize;
+    sf::View view;
+    int mapSizeX;
+    int mapSizeY;
+    sf::Vector2i gridViewPosition;
+    float invicibleTime;
+    float InvicibleTimeMax;
+
+    TileMap map;
+    Player *player;
+    Pause *menu;
+    std::vector<Entity*> activeEntities;
+    std::stack<Entity*> entityStack;
+    sf::Texture player_sheet;
+    sf::Texture spider_sheet;
+
+    sf::Font font;
+    sf::Text hpText;
+    sf::Text guideText;
+
 
 public:
-    // initialization
-    void initVariables();
-    void initGraphicsSettings();
-    void initWindow();
-    void initKeys();
-    void initStateData();
-    void initStates();
-    Game();
-    virtual ~Game();
+    explicit Game(StateData* state_data);
+    ~Game() override;
     // functions
-    static void endApplication();
-    // update
-    void updateTm();
-    void updateSFMLEvents();
-    void update();
-    // render
-    void render();
-    // core
-    void run();
+    bool getInvicibleTime();
+    void updateView();
+    void updateInput(const float & tm) override;
+    void updatePlayerInput(const float &tm);
+    void updateCombat(const float & tm);
+    void updateInvTime(const float & tm);
+    void updateGui();
+    void update(const float & tm) override;
+    void render(sf::RenderTarget *target) override ;
+
 };
 
 

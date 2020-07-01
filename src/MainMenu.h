@@ -2,22 +2,23 @@
 // Created by Adam on 14.06.2020.
 //
 
-#ifndef GENERIC_GIERKA_MAINMENUSTATE_H
-#define GENERIC_GIERKA_MAINMENUSTATE_H
+#ifndef GENERIC_GIERKA_MAINMENU_H
+#define GENERIC_GIERKA_MAINMENU_H
 
 #include "State.h"
-#include "SettingsState.h"
-#include "GameState.h"
+#include "Settings.h"
+#include "Game.h"
 #include "Gui.h"
 
 class State;
-class Gui;
 
-class MainMenuState : public State {
+class MainMenu : public State {
 private:
+    // variables
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
     sf::Font font;
+    sf::Music music;
 
     std::map<std::string, gui::Button*> buttons;
 
@@ -29,8 +30,8 @@ private:
     void resetGui();
 
 public:
-    explicit MainMenuState(StateData* state_data);
-    ~MainMenuState() override;
+    explicit MainMenu(StateData* state_data);
+    ~MainMenu() override;
 
     // functions
     void updateInput(const float& tm) override;
@@ -41,4 +42,4 @@ public:
 };
 
 
-#endif //GENERIC_GIERKA_MAINMENUSTATE_H
+#endif //GENERIC_GIERKA_MAINMENU_H

@@ -36,7 +36,6 @@ gui::Button::Button(float x, float y, float width, float height,
     text.setString(text_);
     text.setFillColor(text_idle_color);
     text.setCharacterSize(character_size);
-    std::cout << text.getGlobalBounds().width << "\n";
     text.setPosition(
             shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f,
             shape.getPosition().y
@@ -58,12 +57,9 @@ gui::Button::Button(float x, float y, float width, float height,
 gui::Button::~Button()
 = default;
 
-//Accessors
 bool gui::Button::isPressed() const {
-    if (buttonState == BTN_ACTIVE)
-        return true;
+    return buttonState == BTN_ACTIVE;
 
-    return false;
 }
 
 std::string gui::Button::getText() const {
@@ -74,7 +70,6 @@ const short unsigned & gui::Button::getId() const {
     return id;
 }
 
-// modifiers
 void gui::Button::setText(const std::string& text_) {
     text.setString(text_);
 }
@@ -131,11 +126,11 @@ void gui::Button::render(sf::RenderTarget& target) {
     target.draw(text);
 }
 
-// DropDownList [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+// ##########################################################################################
 gui::DropDownList::DropDownList(float x, float y, float width, float height,
                                 sf::Font& font, std::string list[],
                                 unsigned nrOfElements, unsigned default_index)
-        : font(font), showList(false), keytimeMax(1.f), keytime(0.f) {
+        : font(font), showList(false), keyTimeMax(1.f), keyTime(0.f) {
 
     activeElement = new gui::Button(
             x, y, width, height,
@@ -148,7 +143,7 @@ gui::DropDownList::DropDownList(float x, float y, float width, float height,
     for (unsigned i = 0; i < nrOfElements; i++) {
         this->list.push_back(
                 new gui::Button(
-                        x, y + ((i+1) * height), width, height,
+                        x, y + ((static_cast<float>(i)+1) * height), width, height,
                         &this->font, list[i], 14,
                         sf::Color(255, 255, 255, 150), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
                         sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 200), sf::Color(20, 20, 20, 200),
@@ -167,11 +162,10 @@ gui::DropDownList::~DropDownList() {
     }
 }
 
-//Accessors
 bool gui::DropDownList::getKeytime() {
-    if (keytime >= keytimeMax)
+    if (keyTime >= keyTimeMax)
     {
-        keytime = 0.f;
+        keyTime = 0.f;
         return true;
     }
 
@@ -182,10 +176,9 @@ const unsigned short & gui::DropDownList::getActiveElementId() const {
     return activeElement->getId();
 }
 
-//Functions
 void gui::DropDownList::updateKeytime(const float& tm) {
-    if (keytime < keytimeMax)
-        keytime += 10.f * tm;
+    if (keyTime < keyTimeMax)
+        keyTime += 10.f * tm;
 }
 
 void gui::DropDownList::update(const sf::Vector2i & mousePosWindow, const float& tm) {
@@ -220,4 +213,3 @@ void gui::DropDownList::render(sf::RenderTarget & target) {
         }
     }
 }
-// DropDownList [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

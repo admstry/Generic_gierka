@@ -2,11 +2,10 @@
 // Created by Adam on 14.06.2020.
 //
 #include "pch.h"
-#include "GraphicsSettings.h"
+#include "Graphics.h"
 
-GraphicsSettings::GraphicsSettings()
-{
-    title = "DEFAULT";
+Graphics::Graphics() {
+    title = "Game";
     resolution = sf::VideoMode::getDesktopMode();
     fullscreen = false;
     verticalSync = false;
@@ -14,14 +13,11 @@ GraphicsSettings::GraphicsSettings()
     contextSettings.antialiasingLevel = 0;
     videoModes = sf::VideoMode::getFullscreenModes();
 }
-
 //Functions
-void GraphicsSettings::saveToFile(const std::string& path) const
-{
+[[maybe_unused]] void Graphics::saveToFile(const std::string& path) const {
     std::ofstream stream(path);
 
-    if (stream.is_open())
-    {
+    if (stream.is_open()) {
         stream << title;
         stream << resolution.width << " " << resolution.height;
         stream << fullscreen;
@@ -33,13 +29,9 @@ void GraphicsSettings::saveToFile(const std::string& path) const
     stream.close();
 }
 
-void GraphicsSettings::loadFromFile(const std::string& path)
-{
+void Graphics::loadFromFile(const std::string& path) {
     std::ifstream stream(path);
-
-
-    if (stream.is_open())
-    {
+    if (stream.is_open()) {
         std::getline(stream, title);
         stream >> resolution.width >> resolution.height;
         stream >> fullscreen;

@@ -16,17 +16,14 @@ State::State(StateData* state_data) {
     gridSize = state_data->gridSize;
 }
 
-State::~State() {
-
-}
+State::~State() = default;
 
 bool State::getQuit() const {
     return quit;
 }
 
 bool State::getKeyTime() {
-    if (keyTime >= this->keyTimeMax)
-    {
+    if (keyTime >= keyTimeMax) {
         keyTime = 0.f;
         return true;
     }
@@ -46,16 +43,16 @@ void State::unpauseState() {
 }
 
 void State::updateMousePosition(sf::View *view) {
-    mousePosScreen = sf::Mouse::getPosition();
-    mousePosWindow = sf::Mouse::getPosition(*window);
+    mousePositionScreen = sf::Mouse::getPosition();
+    mousePositionWindow = sf::Mouse::getPosition(*window);
 
     if (view) {
         window->setView(*view);
     }
-    mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
-    mousePosGrid = (sf::Vector2i(
-            static_cast<int>(mousePosView.x) / static_cast<int>(gridSize),
-            static_cast<int>(mousePosView.y) / static_cast<int>(gridSize))
+    mousePositionView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+    mousePositionGrid = (sf::Vector2i(
+            static_cast<int>(mousePositionView.x) / static_cast<int>(gridSize),
+            static_cast<int>(mousePositionView.y) / static_cast<int>(gridSize))
     );
     window->setView(window->getDefaultView());
 }

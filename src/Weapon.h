@@ -7,9 +7,8 @@
 
 
 class Weapon {
-private:
-    void initVariables();
 protected:
+    // variables
     unsigned damage;
     unsigned range;
     sf::Clock attackTimer;
@@ -18,8 +17,9 @@ public:
     Weapon(unsigned damage,unsigned range,unsigned atk_speed);
     ~Weapon();
 
-    unsigned getDamage() const;
-    const unsigned& getRange() const;
+    // functions
+    [[nodiscard]] unsigned getDamage() const;
+    [[nodiscard]] const unsigned& getRange() const;
     bool getAttackTimer();
 
 };

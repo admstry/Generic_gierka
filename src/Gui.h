@@ -8,9 +8,9 @@
 enum button_states{BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE};
 
 namespace gui {
-    float p2pX(const float perc, const sf::VideoMode& vm);
-    float p2pY(const float perc, const sf::VideoMode& vm);
-    unsigned calcCharSize(const sf::VideoMode& vm, const unsigned modifier = 60);
+    float p2pX(float perc, const sf::VideoMode& vm);
+    float p2pY(float perc, const sf::VideoMode& vm);
+    unsigned calcCharSize(const sf::VideoMode& vm, unsigned modifier = 60);
 
     class Button
     {
@@ -43,16 +43,14 @@ namespace gui {
                short unsigned id = 0);
         ~Button();
 
-        //Accessors
+        // functions
         bool isPressed() const;
         std::string getText() const;
         const short unsigned& getId() const;
 
-        //Modifiers
         void setText(const std::string& text);
-        void setId(const short unsigned id_);
+        void setId(short unsigned id_);
 
-        //Functions
         void update(const sf::Vector2i& mousePosWindow);
         void render(sf::RenderTarget& target);
     };
@@ -60,8 +58,9 @@ namespace gui {
     class DropDownList
     {
     private:
-        float keytime;
-        float keytimeMax;
+        // variables
+        float keyTime;
+        float keyTimeMax;
 
         sf::Font& font;
         gui::Button* activeElement;
@@ -73,11 +72,9 @@ namespace gui {
                      sf::Font& font, std::string list[],
                      unsigned nrOfElements, unsigned default_index = 0);
         ~DropDownList();
+        // functions
+        [[nodiscard]] const unsigned short& getActiveElementId() const;
 
-        //Accessors
-        const unsigned short& getActiveElementId() const;
-
-        //Functions
         bool getKeytime();
         void updateKeytime(const float& tm);
         void update(const sf::Vector2i& mousePosWindow, const float& tm);

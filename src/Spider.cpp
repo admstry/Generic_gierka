@@ -6,12 +6,14 @@
 #include "Spider.h"
 
 void Spider::initVariables() {
-    hpMax = 10;
+    hpMax = 5;
     hp = hpMax;
 }
 
 void Spider::initAnimations() {
-    animationComponent->addAnimation("IDLE", 15.f, 0, 0, 4, 0, 32, 32);
+    animation->addAnimation("IDLE", 15.f, 0, 0, 4, 0, 16, 16);
+    animation->addAnimation("WALK_LEFT", 16.f, 0, 1, 5, 1, 16, 16);
+    animation->addAnimation("WALK_RIGHT", 16.f, 0, 2, 5, 2, 16, 16);
 }
 
 void Spider::initGui() {
@@ -23,9 +25,9 @@ void Spider::initGui() {
 Spider::Spider(float x, float y, sf::Texture &texture_sheet) {
     initVariables();
     initGui();
-    createMovementComponent(200.f, 800.f, 500.f);
-    createAnimationComponent(texture_sheet);
-    createHitboxComponent(sprite,32,64,32,32);
+    createMovement(200.f, 800.f, 500.f);
+    createAnimation(texture_sheet);
+    createHitBox(sprite, 0, 0, 16 * 3, 16 * 3);
     sprite.setPosition(x,y);
     initAnimations();
     sprite.setColor(sf::Color(rand()%255,rand()%255,rand()%255,255));
@@ -40,22 +42,29 @@ void Spider::updateGui() {
 }
 
 void Spider::updateAnimation(const float &tm) {
-    if (this->movementComponent->getState(IDLE))
-    {
-        this->animationComponent->play("IDLE", tm);
+    if (this->movement->getState(IDLE)) {
+        this->animation->play("IDLE", tm);
+    }
+    else if (movement->getState(MOVING_LEFT)) {
+        animation->play("WALK_LEFT", tm, movement->getVelocity().x, movement->getMaxVelocity());
+    }
+    else if (movement->getState(MOVING_RIGHT) || movement->getState(MOVING_DOWN)) {
+        animation->play("WALK_RIGHT", tm, movement->getVelocity().x, movement->getMaxVelocity());
+    }
+    else if (movement->getState(MOVING_UP)) {
+        animation->play("WALK_LEFT", tm, movement->getVelocity().x, movement->getMaxVelocity());
     }
 }
 
 void Spider::update(const float &tm) {
-    movementComponent->update(tm);
+    movement->update(tm);
     updateGui();
     updateAnimation(tm);
-    hitboxComponent->update();
+    hitbox->update();
 }
 
 void Spider::render(sf::RenderTarget &target) {
     target.draw(sprite);
-    hitboxComponent->render(target);
     target.draw(hpBar);
 }
 

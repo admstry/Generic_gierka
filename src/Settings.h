@@ -2,14 +2,15 @@
 // Created by Adam on 14.06.2020.
 //
 
-#ifndef GENERIC_GIERKA_SETTINGSSTATE_H
-#define GENERIC_GIERKA_SETTINGSSTATE_H
+#ifndef GENERIC_GIERKA_SETTINGS_H
+#define GENERIC_GIERKA_SETTINGS_H
 
 #include "State.h"
 #include "Gui.h"
 
-class SettingsState : public State {
+class Settings : public State {
 private:
+    // variables
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
     sf::Font font;
@@ -27,12 +28,12 @@ private:
     void initGui();
     void resetGui();
 public:
-    explicit SettingsState(StateData* state_data);
-    ~SettingsState() override;
+    explicit Settings(StateData* state_data);
+    ~Settings() override;
 
     // functions
-    void updateInput(const float& tm) override;
     void updateGui(const float& tm);
+    void updateInput(const float & tm) override;
     void update(const float& dt) override;
     void renderGui(sf::RenderTarget& target);
     void render(sf::RenderTarget* target) override;
@@ -41,4 +42,4 @@ public:
 };
 
 
-#endif //GENERIC_GIERKA_SETTINGSSTATE_H
+#endif //GENERIC_GIERKA_SETTINGS_H
